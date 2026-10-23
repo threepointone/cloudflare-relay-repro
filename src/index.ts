@@ -12,7 +12,6 @@
  */
 
 import { RealtimeClient } from '@openai/realtime-api-beta';
-import { WebSocket } from 'partysocket';
 
 declare global {
 	interface Env {
@@ -74,11 +73,11 @@ async function handleRealtimeProxy({ request, env, ctx }: { request: Request; en
 
 	// Create RealtimeClient
 	try {
+		// (globalThis as any).document = 1; // This tricks the OpenAI library into using `new WebSocket`
 		console.log('Creating RealtimeClient');
 		realtimeClient = new RealtimeClient({
 			apiKey,
-			dangerouslyAllowAPIKeyInBrowser: true,
-			WebSocket: WebSocket,
+			// dangerouslyAllowAPIKeyInBrowser: true,
 		});
 	} catch (e) {
 		console.error(`Error creating RealtimeClient: ${e}`);
